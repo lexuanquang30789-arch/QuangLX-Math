@@ -1,69 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Luyện Tập Toán - Thầy Quang</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
-        .quiz-container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #1a73e8; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .question { margin-bottom: 30px; padding: 15px; border-left: 5px solid #1a73e8; background: #fafafa; }
-        .options { list-style: none; padding: 0; }
-        .options li { margin: 12px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s; background: white; }
-        .options li:hover { background-color: #e8f0fe; border-color: #1a73e8; }
-        .selected { background-color: #d2e3fc !important; border-color: #1a73e8 !important; font-weight: bold; }
-        button { display: block; width: 100%; padding: 15px; background: #34a853; color: white; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        button:hover { background: #2d8e47; }
-        #result { margin-top: 25px; text-align: center; font-weight: bold; font-size: 22px; color: #d93025; }
-    </style>
-</head>
+<html>
 <body>
-
-<div class="quiz-container">
-    <h1>📝 PHIẾU BÀI TẬP TOÁN TỰ LUYỆN</h1>
-    <div id="quiz-content"></div>
-    <button onclick="checkAnswers()">Nộp bài ngay</button>
-    <div id="result"></div>
-</div>
-
-<script>
-    const myData = [
-        { q: "Câu 1: Tính đạo hàm hàm số $y = x^3$?", o: ["$3x^2$", "$x^2$", "$3x$", "$2x$"], a: 0 },
-        { q: "Câu 2: Nguyên hàm của $\cos x$ là gì?", o: ["$\sin x + C$", "$-\sin x + C$", "$\tan x + C$", "$\cot x + C$"], a: 0 },
-        { q: "Câu 3: Phương trình $\log_2 x = 3$ có nghiệm là:", o: ["$x=6$", "$x=9$", "$x=8$", "$x=5$"], a: 2 }
-    ];
-
-    function renderQuiz() {
-        const container = document.getElementById('quiz-content');
-        container.innerHTML = myData.map((item, i) => `
-            <div class="question">
-                <p><strong>${item.q}</strong></p>
-                <ul class="options" id="group${i}">
-                    ${item.o.map((opt, j) => `<li onclick="pick(${i}, ${j})">${opt}</li>`).join('')}
-                </ul>
-            </div>
-        `).join('');
-    }
-
-    let userChoices = {};
-    function pick(qIdx, oIdx) {
-        userChoices[qIdx] = oIdx;
-        const items = document.querySelectorAll('#group' + qIdx + ' li');
-        items.forEach(li => li.classList.remove('selected'));
-        items[oIdx].classList.add('selected');
-    }
-
-    function checkAnswers() {
-        let correct = 0;
-        myData.forEach((item, i) => { if(userChoices[i] === item.a) correct++; });
-        document.getElementById('result').innerHTML = "Kết quả: " + correct + "/" + myData.length + " câu đúng!";
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    window.onload = renderQuiz;
-</script>
+    <h1>KIỂM TRA KẾT NỐI</h1>
+    <div id="test">Đang tải câu hỏi...</div>
+    <script>
+        const data = ["Câu 1: 1+1=?", "Câu 2: 2+2=?"];
+        document.getElementById('test').innerHTML = data.join('<br>');
+    </script>
 </body>
 </html>

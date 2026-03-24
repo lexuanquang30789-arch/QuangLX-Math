@@ -6,129 +6,64 @@
     <title>Hệ Thống Luyện Tập Toán - Thầy Quang</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background-color: #f4f7f9; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .quiz-container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #2c3e50; }
-        .question { margin-bottom: 25px; padding: 15px; border-bottom: 1px solid #eee; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .quiz-container { max-width: 700px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a73e8; font-size: 24px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .question { margin-bottom: 30px; padding: 15px; border-left: 5px solid #1a73e8; background: #fafafa; }
         .options { list-style: none; padding: 0; }
-        .options li { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.3s; }
-        .options li:hover { background-color: #e3f2fd; }
-        .selected { background-color: #bbdefb !important; border-color: #2196f3 !important; }
-        button { display: block; width: 100%; padding: 15px; background: #27ae60; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #219150; }
-        #result { margin-top: 20px; text-align: center; font-weight: bold; font-size: 20px; }
-        .correct { color: #27ae60; }
-        .wrong { color: #e74c3c; }
+        .options li { margin: 12px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.2s; background: white; }
+        .options li:hover { background-color: #e8f0fe; border-color: #1a73e8; }
+        .selected { background-color: #d2e3fc !important; border-color: #1a73e8 !important; font-weight: bold; }
+        button { display: block; width: 100%; padding: 15px; background: #34a853; color: white; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        button:hover { background: #2d8e47; }
+        #result { margin-top: 25px; text-align: center; font-weight: bold; font-size: 22px; color: #d93025; }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
-    <h1>📝 PHIẾU BÀI TẬP TỰ LUYỆN</h1>
-    <div id="quiz">
-        </div>
-    <button onclick="submitQuiz()">Nộp bài</button>
+    <h1>📝 PHIẾU BÀI TẬP TOÁN TỰ LUYỆN</h1>
+    <div id="quiz-content"></div>
+    <button onclick="checkAnswers()">Nộp bài ngay</button>
     <div id="result"></div>
 </div>
 
 <script>
-    const quizData = [
-        	/* === TÌM VÀ THAY THẾ ĐOẠN NÀY VÀO TRONG FILE INDEX.HTML CỦA BẠN === */
-
-    const quizData = [
-        {
-            question: "Câu 1: Cho hàm số $y = f(x)$ có bảng biến thiên như hình bên. Hàm số đã cho đồng biến trên khoảng nào dưới đây?",
-            options: ["$(1; +\infty)$ và $(-\infty; -1)$.", "$\mathbb{R} \\setminus \{-1; 1\}$", "$(-1; 1)$", "$(0; 1)$"],
-            answer: 0
-        },
-        {
-            question: "Câu 2: Nguyên hàm của hàm số $f(x) = \sin 2x$ là:",
-            options: ["$\frac{1}{2}\cos 2x + C$", "$-\frac{1}{2}\cos 2x + C$", "$\cos 2x + C$", "$-\cos 2x + C$"],
-            answer: 1
-        },
-        {
-            question: "Câu 3: Số tập con có 3 phần tử của một tập hợp có 5 phần tử là:",
-            options: ["$C_5^3$", "$A_5^3$", "$3! \cdot 5!$", "$3 \cdot 5$"],
-            answer: 0
-        },
-        {
-            question: "Câu 4: Tích phân $\int_0^1 (2x + 1) dx$ bằng:",
-            options: ["$2$", "$3$", "$1$", "$0$"],
-            answer: 0
-        },
-        {
-            question: "Câu 5: Tập nghiệm của phương trình $\log_2(x-1) = 3$ là:",
-            options: ["$\{\sqrt[3]{2} + 1\}$", "$\{7\}$", "$\{9\}$", "$\{10\}$"],
-            answer: 2
-        },
-        {
-            question: "Câu 6: Cho hình chóp $S.ABC$ có đáy $ABC$ là tam giác vuông tại $B$, $SA$ vuông góc với mặt đáy. Góc giữa đường thẳng $SC$ và mặt đáy $(ABC)$ là góc nào?",
-            options: ["$\widehat{SCA}$", "$\widehat{SBC}$", "$\widehat{SBA}$", "$\widehat{SBC}$"],
-            answer: 0
-        },
-        {
-            question: "Câu 7: Diện tích mặt cầu có bán kính $R = 2 \text{ cm}$ là:",
-            options: ["$4\pi \text{ cm}^2$", "$8\pi \text{ cm}^2$", "$16\pi \text{ cm}^2$", "$\frac{32}{3}\pi \text{ cm}^3$"],
-            answer: 2
-        },
-        {
-            question: "Câu 8: Giá trị lớn nhất của hàm số $y = x^3 - 3x^2 - 1$ trên đoạn $[1; 3]$ là:",
-            options: ["$-3$", "$-1$", "$0$", "$1$"],
-            answer: 1
-        },
-        {
-            question: "Câu 9: Cho cấp số nhân $(u_n)$ có số hạng đầu $u_1 = 3$ và công bội $q = 2$. Giá trị của $u_4$ bằng:",
-            options: ["$12$", "$24$", "$48$", "$18$"],
-            answer: 1
-        },
-        {
-            question: "Câu 10: Tập nghiệm của bất phương trình $3^{2x} > 27$ là:",
-            options: ["$(1,5; +\infty)$", "$(-\infty; 1,5)$", "$(\frac{2}{3}; +\infty)$", "$(3; +\infty)$"],
-            answer: 0
-        }
+    const myData = [
+        { q: "Câu 1: Tính đạo hàm hàm số $y = x^3$?", o: ["$3x^2$", "$x^2$", "$3x$", "$2x$"], a: 0 },
+        { q: "Câu 2: Nguyên hàm của $\cos x$ là gì?", o: ["$\sin x + C$", "$-\sin x + C$", "$\tan x + C$", "$\cot x + C$"], a: 0 },
+        { q: "Câu 3: Phương trình $\log_2 x = 3$ có nghiệm là:", o: ["$x=6$", "$x=9$", "$x=8$", "$x=5$"], a: 2 }
     ];
 
-/* === THAY THẾ ĐẾN ĐÂY. NHỚ ĐỪNG ĐỂ THỪA HOẶC THIẾU DẤU NGAOJC NÀO NHÉ! === */
-	
-    ];
-
-    function loadQuiz() {
-        const quizDiv = document.getElementById('quiz');
-        quizDiv.innerHTML = quizData.map((q, qIdx) => `
+    function renderQuiz() {
+        const container = document.getElementById('quiz-content');
+        container.innerHTML = myData.map((item, i) => `
             <div class="question">
-                <p><strong>${q.question}</strong></p>
-                <ul class="options" id="q${qIdx}">
-                    ${q.options.map((opt, oIdx) => `
-                        <li onclick="selectOption(${qIdx}, ${oIdx})">${opt}</li>
-                    `).join('')}
+                <p><strong>${item.q}</strong></p>
+                <ul class="options" id="group${i}">
+                    ${item.o.map((opt, j) => `<li onclick="pick(${i}, ${j})">${opt}</li>`).join('')}
                 </ul>
             </div>
         `).join('');
     }
 
-    let userAnswers = {};
-
-    function selectOption(qIdx, oIdx) {
-        userAnswers[qIdx] = oIdx;
-        const options = document.querySelectorAll(`#q${qIdx} li`);
-        options.forEach(li => li.classList.remove('selected'));
-        options[oIdx].classList.add('selected');
+    let userChoices = {};
+    function pick(qIdx, oIdx) {
+        userChoices[qIdx] = oIdx;
+        const items = document.querySelectorAll('#group' + qIdx + ' li');
+        items.forEach(li => li.classList.remove('selected'));
+        items[oIdx].classList.add('selected');
     }
 
-    function submitQuiz() {
-        let score = 0;
-        quizData.forEach((q, i) => {
-            if (userAnswers[i] === q.answer) score++;
-        });
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = `Bạn đúng ${score}/${quizData.length} câu!`;
-        resultDiv.className = score === quizData.length ? 'correct' : 'wrong';
+    function checkAnswers() {
+        let correct = 0;
+        myData.forEach((item, i) => { if(userChoices[i] === item.a) correct++; });
+        document.getElementById('result').innerHTML = "Kết quả: " + correct + "/" + myData.length + " câu đúng!";
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
-    loadQuiz();
+    window.onload = renderQuiz;
 </script>
-
 </body>
 </html>

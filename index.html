@@ -1,11 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Luyện Tập Toán - Thầy Quang</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; max-width: 600px; width: 100%; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; font-size: 22px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .quiz-item { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 10px; transition: 0.3s; }
+        .quiz-item:hover { border-color: #3498db; background: #f9fcff; }
+        .question { font-weight: bold; margin-bottom: 15px; color: #34495e; display: block; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .opt { padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; }
+        .opt:hover { background: #e1f5fe; }
+        .selected { background: #3498db !important; color: white !important; border-color: #2980b9 !important; }
+        .btn-submit { width: 100%; padding: 15px; background: #2ecc71; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .btn-submit:hover { background: #27ae60; }
+        #result { margin-top: 20px; text-align: center; font-size: 20px; font-weight: bold; color: #e74c3c; }
+    </style>
+</head>
 <body>
-    <h1>KIỂM TRA KẾT NỐI</h1>
-    <div id="test">Đang tải câu hỏi...</div>
-    <script>
-        const data = ["Câu 1: 1+1=?", "Câu 2: 2+2=?"];
-        document.getElementById('test').innerHTML = data.join('<br>');
-    </script>
+
+<div class="container">
+    <h1>📝 PHIẾU BÀI TẬP TRẮC NGHIỆM</h1>
+    <div id="quiz-box"></div>
+    <button class="btn-submit" onclick="submit()">Nộp bài ngay</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    // Dữ liệu câu hỏi - Bạn có thể thay đổi ở đây
+    const list = [
+        { q: "Câu 1: Tính đạo hàm của $y = x^2 + 1$?", a: ["$2x$", "$x$", "$2$", "$0$"], r: 0 },
+        { q: "Câu 2: Giá trị của $\sin(90^\circ)$ là:", a: ["$0$", "$1$", "$-1$", "$\frac{1}{2}$"], r: 1 },
+        { q: "Câu 3: Nguyên hàm của $\frac{1}{x}$ là:", a: ["$x^2$", "$\ln|x| + C$", "$e^x$", "$\sin x$"], r: 1 }
+    ];
+
+    let userAnswers = {};
+
+    function showQuiz() {
+        let html = "";
+        list.forEach((item, i) => {
+            html += `<div class="quiz-item">
+                <span class="question">${item.q}</span>
+                <div class="options" id="g${i}">
+                    ${item.a.map((opt, j) => `<div class="opt" onclick="choose(${i}, ${j})">${opt}</div>`).join('')}
+                </div>
+            </div>`;
+        });
+        document.getElementById('quiz-box').innerHTML = html;
+    }
+
+    function choose(qIdx, oIdx) {
+        userAnswers[qIdx] = oIdx;
+        let elements = document.querySelectorAll(`#g${qIdx} .opt`);
+        elements.forEach(el => el.classList.remove('selected'));
+        elements[oIdx].classList.add('selected');
+    }
+
+    function submit() {
+        let score = 0;
+        list.forEach((item, i) => {
+            if (userAnswers[i] === item.r) score++;
+        });
+        document.getElementById('result').innerText = `Bạn đúng ${score}/${list.length} câu!`;
+    }
+
+    window.onload = showQuiz;
+</script>
+
 </body>
 </html>
